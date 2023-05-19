@@ -70,24 +70,6 @@ pub async fn open_firefox(Extension(state): Extension<SharedState>, Json(open_ur
 
 #[axum_macros::debug_handler]
 #[utoipa::path(
-        delete,
-        path = "/homehub/browser",
-        tag = "Homehub",
-        responses(
-            (status = 200, description = "Browser closed."),
-        ),
-    )]
-pub async fn close_firefox(Extension(state): Extension<SharedState>) {
-    state
-        .lock()
-        .await
-        .hub_controller
-        .close_firefox_reopen_ha()
-        .expect("Error closing firefox");
-}
-
-#[axum_macros::debug_handler]
-#[utoipa::path(
         post,
         path = "/homehub/wake",
         tag = "Homehub",
