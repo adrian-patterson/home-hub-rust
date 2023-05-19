@@ -10,7 +10,7 @@ pub struct HubController {
 
 impl HubController {
     pub fn new() -> Self {
-        let firefox_ha_process = Command::new("google-chrome")
+        let firefox_ha_process = Command::new("firefox")
             .arg("--start-maximized")
             .arg("--new-window")
             .arg("http://ha.local:8123")
@@ -65,7 +65,7 @@ impl HubController {
     pub fn open_firefox(&mut self, url: String) -> Result<(), Error> {
         self.firefox_browser_process.kill()?;
 
-        let new_browser_process = Command::new("google-chrome")
+        let new_browser_process = Command::new("firefox")
             .arg("--start-maximized")
             .arg("--new-window")
             .arg(url)
@@ -83,7 +83,7 @@ impl HubController {
         if !self.is_ha_dashboard_open {
             self.firefox_browser_process.kill()?;
 
-            let ha_process = Command::new("google-chrome")
+            let ha_process = Command::new("firefox")
                 .arg("--start-maximized")
                 .arg("--new-window")
                 .arg("http://ha.local:8123")
