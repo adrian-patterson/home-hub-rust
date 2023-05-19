@@ -1,0 +1,22 @@
+[package]
+name = "homehub"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+axum = { version = "0.6.18", features = ["query"] }
+hyper = "0.14.26"
+tokio = { version = "1.28.1", features = ["full"] }
+tower = "0.4.13"
+tracing-subscriber = "0.3.17"
+tracing = "0.1.37"
+tower-http = { version = "0.4.0", features = ["trace", "add-extension"] }
+utoipa = { version = "3", features = ["axum_extras"] }
+utoipa-swagger-ui = { version = "3", features = ["axum"] }
+serde_json = "1.0.96"
+serde = "1.0.163"
+anyhow = "1.0.71"
+axum-macros = "0.3.7"
+
