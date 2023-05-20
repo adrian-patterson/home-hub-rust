@@ -1,3 +1,5 @@
+#!/bin/bash
+
 cd ~/Documents/home-hub-rust/
 git pull origin main
 cargo build --release
