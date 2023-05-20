@@ -1,11 +1,10 @@
 use crate::{utils::hubcontroller::HubController, SharedState};
-use axum::{Extension, Json};
-use serde::{Deserialize, Serialize};
-use utoipa::ToSchema;
+use axum::{extract::Query, Extension};
+use serde::Deserialize;
+use utoipa::IntoParams;
 
-#[derive(Serialize, Deserialize, ToSchema, Clone)]
-#[schema(example = json!({ "url": "https://google.com" }))]
-pub struct OpenUrl {
+#[derive(Deserialize, IntoParams)]
+pub struct UrlQuery {
     url: String,
 }
 
@@ -14,20 +13,22 @@ pub struct OpenUrl {
         post,
         path = "/homehub/kiosk",
         tag = "Homehub",
-        request_body = OpenUrl,
+        params(
+            UrlQuery
+        ),
         responses(
             (status = 200, description = "Chrome instance in Kiosk mode was opened with given URL"),
         ),
     )]
 pub async fn open_chrome_kiosk(
     Extension(state): Extension<SharedState>,
-    Json(open_url): Json<OpenUrl>,
+    Query(url_query): Query<UrlQuery>,
 ) {
     state
         .lock()
         .await
         .hub_controller
-        .open_chrome_kiosk(open_url.url)
+        .open_chrome_kiosk(url_query.url)
         .expect("Error opening chrome");
 }
 
@@ -54,17 +55,22 @@ pub async fn close_chrome_kiosk(Extension(state): Extension<SharedState>) {
         post,
         path = "/homehub/browser",
         tag = "Homehub",
-        request_body = OpenUrl,
+        params(
+            UrlQuery
+        ),
         responses(
             (status = 200, description = "Firefox instance opened in windowed fullscreen."),
         ),
     )]
-pub async fn open_firefox(Extension(state): Extension<SharedState>, Json(open_url): Json<OpenUrl>) {
+pub async fn open_firefox(
+    Extension(state): Extension<SharedState>,
+    Query(url_query): Query<UrlQuery>,
+) {
     state
         .lock()
         .await
         .hub_controller
-        .open_url(open_url.url)
+        .open_firefox(url_query.url)
         .expect("Error opening firefox");
 }
 

@@ -19,5 +19,4 @@ serde_json = "1.0.96"
 serde = "1.0.163"
 anyhow = "1.0.71"
 axum-macros = "0.3.7"
-webbrowser = "0.8.9"
-
+open = "4.1.0"

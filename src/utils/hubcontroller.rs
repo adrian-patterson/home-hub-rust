@@ -8,12 +8,8 @@ pub struct HubController {
 
 impl HubController {
     pub fn new() -> Self {
-        Command::new("firefox")
-            .arg("--start-maximized")
-            .arg("--new-window")
-            .arg("http://ha.local:8123")
-            .spawn()
-            .expect("Unable to create firefox browser process");
+        open::with("http://ha.local:8123", "firefox")
+            .expect("Failed to open home assistant in firefox");
         Self {
             chrome_browser_process: None,
         }
@@ -64,8 +60,8 @@ impl HubController {
         Ok(())
     }
 
-    pub fn open_url(&mut self, url: String) -> Result<(), Error> {
-        webbrowser::open(&url).expect("Failed to open browser");
+    pub fn open_firefox(&mut self, url: String) -> Result<(), Error> {
+        open::with(&url, "firefox").expect("Failed to open browser");
         Ok(())
     }
 

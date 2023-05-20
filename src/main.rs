@@ -37,9 +37,6 @@ async fn main() {
             homehub::wake_up_display,
             homehub::sleep_display
         ),
-        components(
-            schemas(homehub::OpenUrl)
-        ),
         tags(
             (name = "Homehub", description = "Homehub controller API")
         )
