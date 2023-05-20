@@ -64,17 +64,16 @@ impl HubController {
         Ok(())
     }
 
-    pub fn open_firefox(&mut self, url: String) -> Result<(), Error> {
-        Command::new("firefox")
-            .arg(url)
-            .spawn()
-            .expect("Unable to create firefox browser process");
-
+    pub fn open_url(&mut self, url: String) -> Result<(), Error> {
+        webbrowser::open(&url).expect("Failed to open browser");
         Ok(())
     }
 
     pub fn wake_up_display() -> Result<(), Error> {
-        Command::new("xset dpms force on")
+        Command::new("xset")
+            .arg("dpms")
+            .arg("force")
+            .arg("on")
             .spawn()
             .expect("Unable to wake up display");
 
@@ -82,7 +81,10 @@ impl HubController {
     }
 
     pub fn sleep_display() -> Result<(), Error> {
-        Command::new("xset dpms force off")
+        Command::new("xset")
+            .arg("dpms")
+            .arg("force")
+            .arg("off")
             .spawn()
             .expect("Unable to wake up display");
 

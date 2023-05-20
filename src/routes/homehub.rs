@@ -64,7 +64,7 @@ pub async fn open_firefox(Extension(state): Extension<SharedState>, Json(open_ur
         .lock()
         .await
         .hub_controller
-        .open_firefox(open_url.url)
+        .open_url(open_url.url)
         .expect("Error opening firefox");
 }
 
