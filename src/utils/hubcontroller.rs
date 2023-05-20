@@ -14,6 +14,7 @@ impl HubController {
             .arg("http://ha.local:8123")
             .spawn()
             .expect("Unable to create firefox browser process");
+
         Self {
             chrome_browser_process: None,
         }
@@ -80,6 +81,8 @@ impl HubController {
             .arg("on")
             .spawn()
             .expect("Unable to wake up display");
+
+        HubController::prevent_screen_sleep()?;
 
         Ok(())
     }
