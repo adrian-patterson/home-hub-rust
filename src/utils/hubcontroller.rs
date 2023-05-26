@@ -57,9 +57,10 @@ impl HubController {
 
     pub fn wake_up_display() -> Result<(), Error> {
         Command::new("sudo")
-            .arg("vcgencmd")
-            .arg("display_power")
-            .arg("1")
+            .arg("xrandr")
+            .arg("--output")
+            .arg("HDMI-2")
+            .arg("--auto")
             .spawn()
             .expect("Unable to wake up display");
 
@@ -68,9 +69,10 @@ impl HubController {
 
     pub fn sleep_display() -> Result<(), Error> {
         Command::new("sudo")
-            .arg("vcgencmd")
-            .arg("display_power")
-            .arg("0")
+            .arg("xrandr")
+            .arg("--output")
+            .arg("HDMI-2")
+            .arg("--off")
             .spawn()
             .expect("Unable to wake up display");
 
