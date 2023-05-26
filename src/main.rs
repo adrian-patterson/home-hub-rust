@@ -69,6 +69,4 @@ async fn main() {
         .serve(router.into_make_service())
         .await
         .unwrap();
-
-    HubController::prevent_screen_sleep().unwrap();
 }

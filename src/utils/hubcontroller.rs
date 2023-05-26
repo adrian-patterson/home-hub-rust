@@ -11,31 +11,12 @@ impl HubController {
         Command::new("firefox")
             .arg("--start-maximized")
             .arg("--new-window")
-            .arg("http://ha.local:8123")
             .spawn()
             .expect("Unable to create firefox browser process");
 
         Self {
             chrome_browser_process: None,
         }
-    }
-
-    pub fn prevent_screen_sleep() -> Result<(), Error> {
-        Command::new("xset")
-            .arg("s")
-            .arg("86400")
-            .spawn()
-            .expect("Unable to set display awake time");
-
-        Command::new("xset")
-            .arg("dpms")
-            .arg("86400")
-            .arg("86400")
-            .arg("86400")
-            .spawn()
-            .expect("Unable to set display dpms time");
-
-        Ok(())
     }
 
     pub fn open_chrome_kiosk(&mut self, url: String) -> Result<(), Error> {
@@ -75,23 +56,21 @@ impl HubController {
     }
 
     pub fn wake_up_display() -> Result<(), Error> {
-        Command::new("xset")
-            .arg("dpms")
-            .arg("force")
-            .arg("on")
+        Command::new("sudo")
+            .arg("vcgencmd")
+            .arg("display_power")
+            .arg("1")
             .spawn()
             .expect("Unable to wake up display");
-
-        HubController::prevent_screen_sleep()?;
 
         Ok(())
     }
 
     pub fn sleep_display() -> Result<(), Error> {
-        Command::new("xset")
-            .arg("dpms")
-            .arg("force")
-            .arg("off")
+        Command::new("sudo")
+            .arg("vcgencmd")
+            .arg("display_power")
+            .arg("0")
             .spawn()
             .expect("Unable to wake up display");
 
