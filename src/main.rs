@@ -2,11 +2,11 @@ mod routes;
 mod utils;
 
 use crate::{
-    routes::homehub::{close_chrome_kiosk, open_firefox, wake_up_display, sleep_display},
+    routes::homehub_router::{close_chrome_kiosk, open_firefox, wake_up_display, sleep_display},
     utils::hubcontroller::HubController,
 };
 use axum::{routing::post, Extension, Router};
-use routes::homehub::{self, open_chrome_kiosk};
+use routes::homehub_router::{self, open_chrome_kiosk};
 use std::sync::Arc;
 use tokio::sync::Mutex;
 use tower_http::trace::{self, TraceLayer};
@@ -31,11 +31,11 @@ async fn main() {
     #[derive(OpenApi)]
     #[openapi(
         paths(
-            homehub::open_chrome_kiosk, 
-            homehub::close_chrome_kiosk, 
-            homehub::open_firefox, 
-            homehub::wake_up_display,
-            homehub::sleep_display
+            homehub_router::open_chrome_kiosk, 
+            homehub_router::close_chrome_kiosk, 
+            homehub_router::open_firefox, 
+            homehub_router::wake_up_display,
+            homehub_router::sleep_display,
         ),
         tags(
             (name = "Homehub", description = "Homehub controller API")
@@ -56,7 +56,7 @@ async fn main() {
         .route("/homehub/browser", post(open_firefox))
         .route("/homehub/wake", post(wake_up_display))
         .route("/homehub/sleep", post(sleep_display))
-        .merge(SwaggerUi::new("/docs").url("/api-docs/openapi.json", ApiDoc::openapi()))
+        .merge(SwaggerUi::new("/docs").url("/docs/openapi.json", ApiDoc::openapi()))
         .layer(
             TraceLayer::new_for_http()
                 .make_span_with(trace::DefaultMakeSpan::new().level(Level::INFO))

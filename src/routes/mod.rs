@@ -1,1 +1,1 @@
-pub mod homehub;
+pub mod homehub_router;

@@ -29,7 +29,7 @@ pub async fn open_chrome_kiosk(
         .await
         .hub_controller
         .open_chrome_kiosk(url_query.url)
-        .expect("Error opening chrome");
+        .unwrap();
 }
 
 #[axum_macros::debug_handler]
@@ -47,7 +47,7 @@ pub async fn close_chrome_kiosk(Extension(state): Extension<SharedState>) {
         .await
         .hub_controller
         .close_chrome_kiosk()
-        .expect("Error closing chrome");
+        .unwrap();
 }
 
 #[axum_macros::debug_handler]
@@ -71,7 +71,7 @@ pub async fn open_firefox(
         .await
         .hub_controller
         .open_firefox(url_query.url)
-        .expect("Error opening firefox");
+        .unwrap();
 }
 
 #[axum_macros::debug_handler]
@@ -84,7 +84,7 @@ pub async fn open_firefox(
         ),
     )]
 pub async fn wake_up_display() {
-    HubController::wake_up_display().expect("Error waking display");
+    HubController::wake_up_display().unwrap();
 }
 
 #[axum_macros::debug_handler]
@@ -97,5 +97,5 @@ pub async fn wake_up_display() {
         ),
     )]
 pub async fn sleep_display() {
-    HubController::sleep_display().expect("Error waking display");
+    HubController::sleep_display().unwrap();
 }

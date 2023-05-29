@@ -1,6 +1,6 @@
 use std::process::{Child, Command};
 
-use anyhow::Error;
+use anyhow::{Error, Result};
 
 pub struct HubController {
     pub chrome_browser_process: Option<Child>,
@@ -8,12 +8,6 @@ pub struct HubController {
 
 impl HubController {
     pub fn new() -> Self {
-        Command::new("firefox")
-            .arg("--start-maximized")
-            .arg("--new-window")
-            .spawn()
-            .expect("Unable to create firefox browser process");
-
         Self {
             chrome_browser_process: None,
         }
