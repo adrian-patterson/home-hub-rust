@@ -2,7 +2,7 @@ mod routes;
 mod utils;
 
 use crate::{
-    routes::homehub_router::{close_chrome_kiosk, open_firefox, wake_up_display, sleep_display},
+    routes::homehub_router::{close_chrome_kiosk, wake_up_display, sleep_display},
     utils::hubcontroller::HubController,
 };
 use axum::{routing::post, Extension, Router};
@@ -33,7 +33,6 @@ async fn main() {
         paths(
             homehub_router::open_chrome_kiosk, 
             homehub_router::close_chrome_kiosk, 
-            homehub_router::open_firefox, 
             homehub_router::wake_up_display,
             homehub_router::sleep_display,
         ),
@@ -53,7 +52,6 @@ async fn main() {
             "/homehub/kiosk",
             post(open_chrome_kiosk).delete(close_chrome_kiosk),
         )
-        .route("/homehub/browser", post(open_firefox))
         .route("/homehub/wake", post(wake_up_display))
         .route("/homehub/sleep", post(sleep_display))
         .merge(SwaggerUi::new("/docs").url("/docs/openapi.json", ApiDoc::openapi()))

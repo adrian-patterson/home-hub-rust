@@ -46,31 +46,7 @@ pub async fn close_chrome_kiosk(Extension(state): Extension<SharedState>) {
         .lock()
         .await
         .hub_controller
-        .close_chrome_kiosk()
-        .unwrap();
-}
-
-#[axum_macros::debug_handler]
-#[utoipa::path(
-        post,
-        path = "/homehub/browser",
-        tag = "Homehub",
-        params(
-            UrlQuery
-        ),
-        responses(
-            (status = 200, description = "Firefox instance opened in windowed fullscreen."),
-        ),
-    )]
-pub async fn open_firefox(
-    Extension(state): Extension<SharedState>,
-    Query(url_query): Query<UrlQuery>,
-) {
-    state
-        .lock()
-        .await
-        .hub_controller
-        .open_firefox(url_query.url)
+        .close_kiosk_and_open_ha_kiosk()
         .unwrap();
 }
 
