@@ -8,6 +8,20 @@ pub struct HubController {
 
 impl HubController {
     pub fn new() -> Self {
+        Command::new("xset")
+            .arg("s")
+            .arg("172800")
+            .spawn()
+            .expect("Unable to set display sleep time");
+
+        Command::new("xset")
+            .arg("dpms")
+            .arg("172800")
+            .arg("172800")
+            .arg("172800")
+            .spawn()
+            .expect("Unable to set display sleep time");
+
         Self {
             chrome_browser_process: None,
         }
@@ -50,11 +64,10 @@ impl HubController {
     }
 
     pub fn wake_up_display() -> Result<(), Error> {
-        Command::new("sudo")
-            .arg("xrandr")
-            .arg("--output")
-            .arg("HDMI-2")
-            .arg("--auto")
+        Command::new("xset")
+            .arg("dpms")
+            .arg("force")
+            .arg("on")
             .spawn()
             .expect("Unable to wake up display");
 
@@ -62,11 +75,10 @@ impl HubController {
     }
 
     pub fn sleep_display() -> Result<(), Error> {
-        Command::new("sudo")
-            .arg("xrandr")
-            .arg("--output")
-            .arg("HDMI-2")
-            .arg("--off")
+        Command::new("xset")
+            .arg("dpms")
+            .arg("force")
+            .arg("off")
             .spawn()
             .expect("Unable to wake up display");
 
