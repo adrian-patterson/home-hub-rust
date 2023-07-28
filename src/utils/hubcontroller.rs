@@ -8,6 +8,14 @@ pub struct HubController {
 
 impl HubController {
     pub fn new() -> Self {
+        Self::prevent_screen_sleep().unwrap();
+
+        Self {
+            chrome_browser_process: None,
+        }
+    }
+
+    fn prevent_screen_sleep() -> Result<(), Error> {
         Command::new("xset")
             .arg("s")
             .arg("172800")
@@ -22,9 +30,7 @@ impl HubController {
             .spawn()
             .expect("Unable to set display sleep time");
 
-        Self {
-            chrome_browser_process: None,
-        }
+        Ok(())
     }
 
     pub fn open_chrome_kiosk(&mut self, url: String) -> Result<(), Error> {
@@ -70,6 +76,8 @@ impl HubController {
             .arg("on")
             .spawn()
             .expect("Unable to wake up display");
+
+        Self::prevent_screen_sleep()?;
 
         Ok(())
     }
