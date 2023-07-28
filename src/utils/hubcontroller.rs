@@ -3,6 +3,7 @@ use std::process::{Child, Command};
 use anyhow::{Error, Result};
 
 const HOME_ASSISTANT_URL: &str = "http://ha.local:8123/";
+const MAX_SLEEP_TIME_MS: &str = "98302";
 
 pub struct HubController {
     pub chrome_browser_process: Option<Child>,
@@ -29,15 +30,15 @@ impl HubController {
     fn prevent_screen_sleep() -> Result<(), Error> {
         Command::new("xset")
             .arg("s")
-            .arg("172800")
+            .arg(MAX_SLEEP_TIME_MS)
             .spawn()
             .expect("Unable to set display sleep time");
 
         Command::new("xset")
             .arg("dpms")
-            .arg("172800")
-            .arg("172800")
-            .arg("172800")
+            .arg(MAX_SLEEP_TIME_MS)
+            .arg(MAX_SLEEP_TIME_MS)
+            .arg(MAX_SLEEP_TIME_MS)
             .spawn()
             .expect("Unable to set display sleep time");
 
