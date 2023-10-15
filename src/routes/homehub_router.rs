@@ -96,6 +96,6 @@ pub async fn wake_up_display() {
             (status = 200, description = "Display woken up."),
         ),
     )]
-pub async fn sleep_display() {
-    HubController::sleep_display().unwrap();
+pub async fn sleep_display(Extension(state): Extension<SharedState>) {
+    state.lock().await.hub_controller.sleep_display().unwrap();
 }

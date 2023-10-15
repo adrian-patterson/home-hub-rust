@@ -61,7 +61,9 @@ impl HubController {
         Ok(())
     }
 
-    pub fn sleep_display() -> Result<(), Error> {
+    pub fn sleep_display(&mut self) -> Result<(), Error> {
+        self.close_chrome_kiosk()?;
+
         Command::new("sudo")
             .arg("xrandr")
             .arg("--output")
