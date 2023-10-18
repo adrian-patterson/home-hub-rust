@@ -105,7 +105,7 @@ impl HubController {
         Ok(())
     }
 
-    pub fn wake_up_display() -> Result<(), Error> {
+    pub fn wake_up_display(&mut self) -> Result<(), Error> {
         Command::new("xset")
             .arg("dpms")
             .arg("force")

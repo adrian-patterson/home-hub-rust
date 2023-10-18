@@ -1,4 +1,4 @@
-use crate::{utils::hubcontroller::HubController, SharedState};
+use crate::SharedState;
 use axum::{extract::Query, Extension};
 use serde::Deserialize;
 use utoipa::IntoParams;
@@ -59,8 +59,8 @@ pub async fn close_chrome_kiosk(Extension(state): Extension<SharedState>) {
             (status = 200, description = "Display woken up."),
         ),
     )]
-pub async fn wake_up_display() {
-    HubController::wake_up_display().unwrap();
+pub async fn wake_up_display(Extension(state): Extension<SharedState>) {
+    state.lock().await.hub_controller.wake_up_display().unwrap();
 }
 
 #[axum_macros::debug_handler]

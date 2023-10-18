@@ -20,3 +20,4 @@ serde = "1.0.163"
 anyhow = "1.0.71"
 axum-macros = "0.3.7"
 openssl = { version = "0.10", features = ["vendored"] }
+tokio-cron-scheduler = "*"

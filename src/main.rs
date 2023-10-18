@@ -5,8 +5,10 @@ use crate::{
     routes::homehub_router::{close_chrome_kiosk, wake_up_display, sleep_display},
     utils::hubcontroller::HubController,
 };
+use anyhow::Error;
 use axum::{routing::post, Extension, Router};
 use routes::homehub_router::{self, open_chrome_kiosk};
+use tokio_cron_scheduler::{JobScheduler, Job};
 use std::sync::Arc;
 use tokio::sync::Mutex;
 use tower_http::trace::{self, TraceLayer};
@@ -22,6 +24,9 @@ pub struct State {
 
 #[tokio::main]
 async fn main() {
+    // Initialize schedulers to turn screen on/off on a schedule
+    initialize_schedulers().await.unwrap();
+
     // Initialize tracing
     tracing_subscriber::fmt()
         .with_target(false)
@@ -67,4 +72,31 @@ async fn main() {
         .serve(router.into_make_service())
         .await
         .unwrap();
+}
+
+async fn initialize_schedulers() -> Result<(), Error> {
+    let sched = JobScheduler::new().await?;
+  
+    sched.add(
+        Job::new_async("0 0 12 * * *", |_uuid, _l| {
+            Box::pin(async move {
+                let mut hub_controller = HubController::new();
+                hub_controller.wake_up_display().unwrap();
+            })
+        })?
+    ).await?;
+
+    sched.add(
+        Job::new_async("0 0 2 * * *", |_uuid, _l| {
+            Box::pin(async move {
+                let mut hub_controller = HubController::new();
+                hub_controller.close_kiosk_and_open_ha_kiosk().unwrap();
+                hub_controller.sleep_display().unwrap();
+            })
+        })?
+    ).await?;
+
+    sched.start().await?;
+
+    Ok(())
 }
