@@ -82,6 +82,7 @@ async fn initialize_schedulers() -> Result<(), Error> {
             Box::pin(async move {
                 let mut hub_controller = HubController::new();
                 hub_controller.wake_up_display().unwrap();
+                hub_controller.close_kiosk_and_open_ha_kiosk().unwrap();
             })
         })?
     ).await?;
